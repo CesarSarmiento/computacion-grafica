@@ -14,6 +14,7 @@ MAGNETA=(255, 0, 255)
 ROSADO=(234,137,154)
 FUCSIA=(222,076,138)
 GRIS=(215,215,215)
+#Juego gallinas
 '''
 anc ancho de corte
 alc alto de corte
