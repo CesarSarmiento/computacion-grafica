@@ -23,7 +23,7 @@ def Recortar(archivo,anc,alc):
     matriz=[]
     imagen=pygame.image.load(archivo).convert_alpha()
     i_ancho, i_alto=imagen.get_size()
-    print i_ancho, '', i_alto
+    #print i_ancho, '', i_alto
     for x in range(i_ancho/anc):
         linea=[]
         for y in range(0,i_alto/alc):
@@ -46,6 +46,19 @@ class Jugador(pygame.sprite.Sprite):
     def update(self):
         self.rect.x+=self.var_x
         self.rect.y+=self.var_y
+        ls_choqueb=pygame.sprite.spritecollide(self,self.bloques,False)
+        for b in ls_choqueb:
+                if self.var_x>0:
+                    self.rect.right=b.rect.left
+                if self.var_x<0:
+                    self.rect.left=b.rect.right
+        self.rect.y+=self.var_y
+        ls_choqueb=pygame.sprite.spritecollide(self,self.bloques,False)
+        for b in ls_choqueb:
+                if self.var_y>0:
+                    self.rect.bottom=b.rect.top
+                if self.var_y<0:
+                    self.rect.top=b.rect.bottom
         if self.con<2:
             self.con+=1
         else:
@@ -101,7 +114,7 @@ class Enemigo(pygame.sprite.Sprite):
         else:
             self.con=0
 class Bloque(pygame.sprite.Sprite):
-    def __init__(self, archivo):
+    def __init__(self, img_sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image=img_sprite
         self.rect=self.image.get_rect()
@@ -124,6 +137,7 @@ if __name__ == '__main__':
     bloques=pygame.sprite.Group()
     animal=Recortar('animales.png',32,32)
     jp=Jugador(animal[3][4])
+    #print type (animal[3][4])
     #Creacion de 5 enemigos en posiciones aleatorias
     for i in range(5):
         en=Enemigo(animal[0][1])
@@ -237,6 +251,19 @@ if __name__ == '__main__':
                 py=int(interprete.get(col,"y"))
                 pantalla.blit(fondo[px][py],(varx,vary))
                 varx+=an
+                if col=="#":
+                    #for b in range(640):
+                    b=Bloque(fondo[px][py])
+                    b.rect.x=varx
+                    b.rect.y=vary
+                    todos.add(b)
+                    bloques.add(b)
+                jp.bloques=bloques
+                    #print "calor"
+                #print col
+                #print type (fondo[px][py])
+                #print varx
+                #print vary
             vary+=al
         #en.image=animal[0+en.con][en.dir]
         jp.image=animal[3+jp.con][jp.dir]
