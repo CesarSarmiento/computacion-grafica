@@ -98,10 +98,12 @@ class Enemigo(pygame.sprite.Sprite):
         self.var_x=2
         self.var_y=0
         self.con=0
-        self.dir=6
+        self.dir=1
         self.disparar=False
         self.tiempo=random.randrange(10,40)
         self.vida=3
+        self.limiz=0
+        self.limde=ANCHO-self.rect.x
     def update(self):
         self.rect.x+=self.var_x
         self.rect.y+=self.var_y
@@ -109,6 +111,12 @@ class Enemigo(pygame.sprite.Sprite):
         '''if self.tiempo==0:
             self.disparar=True
             self.tiempo=random.randrange(20)'''
+        if self.rect.x<self.limiz:
+            self.var_x=self.var_x*(-1)
+            self.dir=2
+        if self.rect.x>self.limde:
+            self.var_x=self.var_x*(-1)
+            self.dir=1
         if self.con<2:
             self.con+=1
         else:
@@ -139,14 +147,47 @@ if __name__ == '__main__':
     jp=Jugador(animal[3][4])
     #print type (animal[3][4])
     #Creacion de 5 enemigos en posiciones aleatorias
-    for i in range(5):
-        en=Enemigo(animal[0][1])
-        en.rect.x=random.randrange(ANCHO)
-        en.rect.y=random.randrange(ALTO)
-        en.var_x=(-1)*random.randrange(1,10)
-        en.var_y=0#random.randrange(3,10)
-        enemigos.add(en)
-        todos.add(en)
+    #Enemigo 1
+    en=Enemigo(animal[0][1])
+    en.rect.x=random.randrange(ANCHO)
+    en.rect.y=random.randrange(ALTO)
+    en.var_x=(-1)*random.randrange(1,10)
+    en.var_y=0#random.randrange(3,10)
+    enemigos.add(en)
+    todos.add(en)
+    #Enemigo 2
+    en1=Enemigo(animal[0][1])
+    en1.rect.x=random.randrange(ANCHO)
+    en1.rect.y=random.randrange(ALTO)
+    en1.var_x=(-1)*random.randrange(1,10)
+    en1.var_y=0#random.randrange(3,10)
+    enemigos.add(en1)
+    todos.add(en1)
+    #Enemigo .3
+    en2=Enemigo(animal[0][1])
+    en2.rect.x=random.randrange(ANCHO)
+    en2.rect.y=random.randrange(ALTO)
+    en2.var_x=(-1)*random.randrange(1,10)
+    en2.var_y=0#random.randrange(3,10)
+    enemigos.add(en2)
+    todos.add(en2)
+    #Enemigo 4
+    en3=Enemigo(animal[0][1])
+    en3.rect.x=random.randrange(ANCHO)
+    en3.rect.y=random.randrange(ALTO)
+    en3.var_x=(-1)*random.randrange(1,10)
+    en3.var_y=0#random.randrange(3,10)
+    enemigos.add(en3)
+    todos.add(en3)
+    #Enemigo 5
+    en4=Enemigo(animal[0][1])
+    en4.rect.x=random.randrange(ANCHO)
+    en4.rect.y=random.randrange(ALTO)
+    en4.var_x=(-1)*random.randrange(1,10)
+    en4.var_y=0#random.randrange(3,10)
+    enemigos.add(en4)
+    todos.add(en4)
+
     todos.add(jp)
     conenemi=50
 
@@ -176,11 +217,11 @@ if __name__ == '__main__':
                     jp.var_y=0
                     jp.dir=5
                 if event.key == pygame.K_UP:
-                    jp.var_y=-3.5
+                    jp.var_y=-3
                     jp.var_x=0
                     jp.dir=7
                 if event.key == pygame.K_DOWN:
-                    jp.var_y=3.5
+                    jp.var_y=3
                     jp.var_x=0
                     jp.dir=4
                 if event.key == pygame.K_SPACE:
@@ -196,7 +237,7 @@ if __name__ == '__main__':
             if event.type == pygame.KEYUP:
                 if event.key==pygame.K_c:
                     b.dir=0
-                if event.key == pygame.K_RIGHT:
+                '''if event.key == pygame.K_RIGHT:
                     jp.var_x=0
                     jp.var_y=0
                     jp.dir=6
@@ -212,6 +253,7 @@ if __name__ == '__main__':
                     jp.var_y=0
                     jp.var_x=0
                     jp.dir=4
+                '''
 
         #Choques entre el jugador y el enemigo
         ls_choque=pygame.sprite.spritecollide(jp,enemigos, True)
@@ -231,7 +273,7 @@ if __name__ == '__main__':
             if en.rect.x < -50:
                 enemigos.remove(en)
         #Creacion de mas enemigos
-        if conenemi==0:
+        '''if conenemi==0:
             en1=Enemigo(animal[0][1])
             en1.rect.x=random.randrange(ANCHO)
             en1.rect.y=random.randrange(ALTO)
@@ -242,6 +284,7 @@ if __name__ == '__main__':
             conenemi=50
         else:
             conenemi-=1
+        '''
         #Dibujar mapa
         vary=0
         for fila in mapa:
@@ -251,6 +294,7 @@ if __name__ == '__main__':
                 py=int(interprete.get(col,"y"))
                 pantalla.blit(fondo[px][py],(varx,vary))
                 varx+=an
+                #Ubica las cercas como un bloque
                 if col=="#":
                     #for b in range(640):
                     b=Bloque(fondo[px][py])
@@ -265,7 +309,11 @@ if __name__ == '__main__':
                 #print varx
                 #print vary
             vary+=al
-        #en.image=animal[0+en.con][en.dir]
+        en.image=animal[0+en.con][en.dir]
+        en1.image=animal[0+en1.con][en1.dir]
+        en2.image=animal[0+en2.con][en2.dir]
+        en3.image=animal[0+en3.con][en3.dir]
+        en4.image=animal[0+en4.con][en4.dir]
         jp.image=animal[3+jp.con][jp.dir]
         #Limitar el jugador con la pantalla 4 direcciones
         if jp.rect.x>ANCHO-jp.rect.width:
